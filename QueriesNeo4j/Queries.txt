@@ -1,0 +1,18 @@
+//Importar csv
+LOAD CSV WITH HEADERS from 'file:/abstract_relations.csv' as row with row where row.source_node is not null 
+MERGE(n:source_node {Name: row.source_node}) MERGE(m:target_node {Name:row.target_node}) MERGE (n) -[:TO {relation:row.relation}]-> (m)
+
+//Achar uma relação específica, nesse caso buscamos pela relação "results"
+MATCH (n1:source_node)-[r:TO{relation:"results"}]->(n2:target_node) RETURN n1, r , n2 LIMIT 2000 
+
+// Contar todos os relacionamentos
+MATCH ()-->() RETURN count(*);
+
+// Pegar 50 nodos aleatórios
+MATCH (n) RETURN n LIMIT 50
+
+// Pegar 50 relações aleatórias
+MATCH(n)-[r]->(m) RETURN n, r, m LIMIT 50
+
+
+...
